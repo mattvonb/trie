@@ -60,10 +60,10 @@ public class DoublyChainedTrie implements Trie {
     }
 
     public boolean contains(String s) {
-        return countWords(s) > 0;
+        return wordCount(s) > 0;
     }
 
-    public int countWords(String s) {
+    public int wordCount(String s) {
         if (s == null || s.isEmpty()) {
             return wordCount;
         }
@@ -75,10 +75,10 @@ public class DoublyChainedTrie implements Trie {
         }
 
         String rest = s.substring(1);
-        return child.countWords(rest);
+        return child.wordCount(rest);
     }
 
-    public int countForPrefix(String s) {
+    public int prefixCount(String s) {
         if (s == null || s.isEmpty()) {
             return prefixCount;
         }
@@ -90,6 +90,6 @@ public class DoublyChainedTrie implements Trie {
         }
 
         String rest = s.substring(1);
-        return child.countForPrefix(rest);
+        return child.prefixCount(rest);
     }
 }

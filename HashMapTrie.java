@@ -45,13 +45,13 @@ public class HashMapTrie implements Trie {
     }
 
     public boolean contains(String s) {
-        return countWords(s) > 0;
+        return wordCount(s) > 0;
     }
 
     // @TODO -- countWords and countForPrefix are the exact same implementation but with 
     // prefixCount and wordCount swapped. How can we abstract this in Java in a sane way?
 
-    public int countWords(String s) {
+    public int wordCount(String s) {
         if (s == null || s.isEmpty()) {
             return wordCount;
         }
@@ -63,10 +63,10 @@ public class HashMapTrie implements Trie {
         }
 
         String rest = s.substring(1);
-        return child.countWords(rest);
+        return child.wordCount(rest);
     }
 
-    public int countForPrefix(String s) {
+    public int prefixCount(String s) {
         if (s == null || s.isEmpty()) {
             return prefixCount;
         }
@@ -78,6 +78,6 @@ public class HashMapTrie implements Trie {
         }
 
         String rest = s.substring(1);
-        return child.countForPrefix(rest);
+        return child.prefixCount(rest);
     }
 }

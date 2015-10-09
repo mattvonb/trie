@@ -15,10 +15,10 @@ public interface Trie {
     /**
      * Returns the number of words that have s as a prefix.
      */
-    public int countForPrefix(String s);
+    public int prefixCount(String s);
 
     /**
      * Returns the number of words that match s exactly (i.e. homographs.)
      */
-    public int countWords(String s);
+    public int wordCount(String s);
 }
