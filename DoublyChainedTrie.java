@@ -1,26 +1,23 @@
 /**
  * A Trie implementation wherein children are chained in a singly-linked list.
  */
-public class DoublyChainedTrie implements Trie {
+public class DoublyChainedTrie extends AbstractTrie {
     private char c;
     private DoublyChainedTrie child;
     private DoublyChainedTrie next;
-    private int wordCount;
-    private int prefixCount;
 
     public DoublyChainedTrie() {
         this('\0');
     }
 
     public DoublyChainedTrie(char c) {
+        super();
         this.c = c;
         child = null;
         next = null;
-        wordCount = 0;
-        prefixCount = 0;
     }
 
-    private DoublyChainedTrie getChild(char c) {
+    protected Trie getChild(char c) {
         DoublyChainedTrie cur = child;
         while (cur != null && cur.c != c) {
             cur = cur.next;
@@ -28,7 +25,8 @@ public class DoublyChainedTrie implements Trie {
         return cur;
     }
 
-    private DoublyChainedTrie addChild(DoublyChainedTrie newChild) {
+    protected Trie addChild(char c) {
+        DoublyChainedTrie newChild = new DoublyChainedTrie(c);
         if (child == null) {
             child = newChild;
             return child;
@@ -40,56 +38,5 @@ public class DoublyChainedTrie implements Trie {
         }
         cur.next = newChild;
         return cur.next;
-    }
-
-    public void add(String s) {
-        if (s == null || s.isEmpty()) {
-            wordCount++;
-            return;
-        }
-        
-        prefixCount++;
-        char first = s.charAt(0);
-        DoublyChainedTrie child = getChild(first);
-        if (child == null) {
-            child = addChild(new DoublyChainedTrie(first));
-        }
-
-        String rest = s.substring(1); // @TODO - speed this up
-        child.add(rest);
-    }
-
-    public boolean contains(String s) {
-        return wordCount(s) > 0;
-    }
-
-    public int wordCount(String s) {
-        if (s == null || s.isEmpty()) {
-            return wordCount;
-        }
-        
-        char first = s.charAt(0);
-        DoublyChainedTrie child = getChild(first);
-        if (child == null) {
-            return 0;
-        }
-
-        String rest = s.substring(1);
-        return child.wordCount(rest);
-    }
-
-    public int prefixCount(String s) {
-        if (s == null || s.isEmpty()) {
-            return prefixCount;
-        }
-
-        char first = s.charAt(0);
-        DoublyChainedTrie child = getChild(first);
-        if (child == null) {
-            return 0;
-        }
-
-        String rest = s.substring(1);
-        return child.prefixCount(rest);
     }
 }
