@@ -29,76 +29,76 @@ import java.util.HashMap;
  * This tree is limited to dictionaries comprised of the latin-1 charset.
  */
 public class ArrayTrie implements Trie {
-		private ArrayTrie[] children;
-		
-		/**
-		 * The number of words this node represents the end of.
-		 */
-		private int wordCount;
-		
-		/**
-		 * The number of words this node represents a prefix of.
-		 */
-		private int prefixCount;
+    private ArrayTrie[] children;
+    
+    /**
+     * The number of words this node represents the end of.
+     */
+    private int wordCount;
+    
+    /**
+     * The number of words this node represents a prefix of.
+     */
+    private int prefixCount;
 
-		public ArrayTrie() {
-				children = new ArrayTrie[256];
-				wordCount = 0;
-				prefixCount = 0;
-		}
-		
-		/**
-		 * Add s to the trie.
-		 */
-		public void add(String s) {
-				if (s == null || s.isEmpty()) {
-						wordCount++;
-						return;
-				}
-				
-				prefixCount++;
-				char first = s.charAt(0);
-				ArrayTrie child = children[(int)first];
-				if (child == null) {
-						child = new ArrayTrie();
-						children[(int)first] = child;
-				}
-				// @TODO -- is this O(n) where n = s.length?
-				String rest = s.substring(1);
-				child.add(rest);				
-		}
+    public ArrayTrie() {
+        children = new ArrayTrie[256];
+        wordCount = 0;
+        prefixCount = 0;
+    }
+    
+    /**
+     * Add s to the trie.
+     */
+    public void add(String s) {
+        if (s == null || s.isEmpty()) {
+            wordCount++;
+            return;
+        }
+        
+        prefixCount++;
+        char first = s.charAt(0);
+        ArrayTrie child = children[(int)first];
+        if (child == null) {
+            child = new ArrayTrie();
+            children[(int)first] = child;
+        }
+        // @TODO -- is this O(n) where n = s.length?
+        String rest = s.substring(1);
+        child.add(rest);        
+    }
 
-		public boolean contains(String s) {
-				return countWords(s) > 0;
-		}
+    public boolean contains(String s) {
+        return countWords(s) > 0;
+    }
 
-		public int countWords(String s) {
-				if (s == null || s.isEmpty()) {
-						return wordCount;
-				}
-				
-				char first = s.charAt(0);
-				ArrayTrie child = children[(int)first];
-				if (child == null) {
-						return 0;
-				}
+    public int countWords(String s) {
+        if (s == null || s.isEmpty()) {
+            return wordCount;
+        }
+        
+        char first = s.charAt(0);
+        ArrayTrie child = children[(int)first];
+        if (child == null) {
+            return 0;
+        }
 
-				String rest = s.substring(1);
-				return child.countWords(rest);
-		}
+        String rest = s.substring(1);
+        return child.countWords(rest);
+    }
 
-		public int countForPrefix(String s) {
-				if (s == null || s.isEmpty()) {
-						return prefixCount;
-				}
+    public int countForPrefix(String s) {
+        if (s == null || s.isEmpty()) {
+            return prefixCount;
+        }
 
-				char first = s.charAt(0);
-				ArrayTrie child = children[(int)first];
-				if (child == null) {
-						return 0;
-				}
+        char first = s.charAt(0);
+        ArrayTrie child = children[(int)first];
+        if (child == null) {
+            return 0;
+        }
 
-				String rest = s.substring(1);
-				return child.countForPrefix(rest);
-		}
+        String rest = s.substring(1);
+        return child.countForPrefix(rest);
+    }
 }
