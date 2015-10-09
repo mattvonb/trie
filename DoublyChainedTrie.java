@@ -1,12 +1,10 @@
-import java.util.Optional;
-
 /**
  * A Trie implementation wherein children are chained in a singly-linked list.
  */
 public class DoublyChainedTrie implements Trie {
 		private char c;
-		private Optional<DoublyChainedTrie> child;
-		private Optional<DoublyChainedTrie> next;
+		private DoublyChainedTrie child;
+		private DoublyChainedTrie next;
 		private int wordCount;
 		private int prefixCount;
 
@@ -16,31 +14,31 @@ public class DoublyChainedTrie implements Trie {
 
 		public DoublyChainedTrie(char c) {
 				this.c = c;
-				child = Optional.empty();
-				next = Optional.empty();
+				child = null;
+				next = null;
 				wordCount = 0;
 				prefixCount = 0;
 		}
 
-		private Optional<DoublyChainedTrie> getChild(char c) {
-				Optional<DoublyChainedTrie> cur = child;
-				while (cur.isPresent() && cur.get().c != c) {
-						cur = cur.get().next;
+		private DoublyChainedTrie getChild(char c) {
+				DoublyChainedTrie cur = child;
+				while (cur != null && cur.c != c) {
+						cur = cur.next;
 				}
 				return cur;
 		}
 
-		private Optional<DoublyChainedTrie> addChild(DoublyChainedTrie newChild) {
-				if (!child.isPresent()) {
-						child = Optional.of(newChild);
+		private DoublyChainedTrie addChild(DoublyChainedTrie newChild) {
+				if (child == null) {
+						child = newChild;
 						return child;
 				}
 
-				DoublyChainedTrie cur = child.get();
-				while (cur.next.isPresent()) {
-						cur = cur.next.get();
+				DoublyChainedTrie cur = child;
+				while (cur.next != null) {
+						cur = cur.next;
 				}
-				cur.next = Optional.of(newChild);
+				cur.next = newChild;
 				return cur.next;
 		}
 
@@ -52,14 +50,13 @@ public class DoublyChainedTrie implements Trie {
 				
 				prefixCount++;
 				char first = s.charAt(0);
-				Optional<DoublyChainedTrie> child = getChild(first);
-				if (!child.isPresent()) {
+				DoublyChainedTrie child = getChild(first);
+				if (child == null) {
 						child = addChild(new DoublyChainedTrie(first));
 				}
 
-				// @TODO -- is this O(n) where n = s.length?
-				String rest = s.substring(1);
-				child.get().add(rest);
+				String rest = s.substring(1); // @TODO - speed this up
+				child.add(rest);
 		}
 
 		public boolean contains(String s) {
@@ -72,13 +69,13 @@ public class DoublyChainedTrie implements Trie {
 				}
 				
 				char first = s.charAt(0);
-				Optional<DoublyChainedTrie> child = getChild(first);
-				if (!child.isPresent()) {
+				DoublyChainedTrie child = getChild(first);
+				if (child == null) {
 						return 0;
 				}
 
 				String rest = s.substring(1);
-				return child.get().countWords(rest);
+				return child.countWords(rest);
 		}
 
 		public int countForPrefix(String s) {
@@ -87,12 +84,12 @@ public class DoublyChainedTrie implements Trie {
 				}
 
 				char first = s.charAt(0);
-				Optional<DoublyChainedTrie> child = getChild(first);
-				if (!child.isPresent()) {
+				DoublyChainedTrie child = getChild(first);
+				if (child == null) {
 						return 0;
 				}
 
 				String rest = s.substring(1);
-				return child.get().countForPrefix(rest);
+				return child.countForPrefix(rest);
 		}
 }
