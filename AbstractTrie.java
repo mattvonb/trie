@@ -17,11 +17,6 @@ public class AbstractTrie implements Trie {
     }
 
     /**
-     * Hook for subclasses to implement object creation.
-     */
-    protected void initialize() {}
-
-    /**
      * Return the child of the current trie node for the given char, if it exists.
      * Otherwise, return null.
      */
