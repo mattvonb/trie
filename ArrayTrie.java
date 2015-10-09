@@ -42,7 +42,7 @@ public class ArrayTrie implements Trie {
 		private int prefixCount;
 
 		public ArrayTrie() {
-				children = new Trie[256];
+				children = new ArrayTrie[256];
 				wordCount = 0;
 				prefixCount = 0;
 		}
@@ -58,7 +58,7 @@ public class ArrayTrie implements Trie {
 				
 				prefixCount++;
 				char first = s.charAt(0);
-				Trie child = children[(int)first];
+				ArrayTrie child = children[(int)first];
 				if (child == null) {
 						child = new ArrayTrie();
 						children[(int)first] = child;
@@ -78,7 +78,7 @@ public class ArrayTrie implements Trie {
 				}
 				
 				char first = s.charAt(0);
-				Trie child = children[(int)first];
+				ArrayTrie child = children[(int)first];
 				if (child == null) {
 						return 0;
 				}
@@ -93,7 +93,7 @@ public class ArrayTrie implements Trie {
 				}
 
 				char first = s.charAt(0);
-				Trie child = children[(int)first];
+				ArrayTrie child = children[(int)first];
 				if (child == null) {
 						return 0;
 				}

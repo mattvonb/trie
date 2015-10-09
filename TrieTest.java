@@ -40,5 +40,8 @@ public class TrieTest {
 
 				testBasicExample(new ArrayTrie());
 				testNonEnglishChars(new ArrayTrie());
+
+				testBasicExample(new DoublyChainedTrie());
+				testNonEnglishChars(new DoublyChainedTrie());
 		}
 }
