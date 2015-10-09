@@ -13,11 +13,12 @@ public class TrieTest {
         assert trie.wordCount("the") == 1;
         assert trie.wordCount("their") == 1;
         assert trie.wordCount("there") == 1;
+        assert trie.wordCount("bass") == 2;
         assert trie.prefixCount("t") == 6;
     }
 
     public static void testNonEnglishChars(Trie trie) {
-        String[] words = {"\u0080~\u00FF\u00FF", "\u0080~\u00EE\u00FF", "\u0080\u00A2\u00FF\u00EE~", "\u0080\u00A2\u00FF~\u00FF", "~!@#$"};
+        String[] words = {"\u0080~\u00FF\u00FF", "\u0080~\u00EE\u00FF", "\u0080\u00A2\u00FF\u00EE~", "\u0080\u00A2\u00FF~\u00FF", "~!@#$", "\u0080\u00A2\u00FF~\u00FF"};
         
         for (String word : words) {
             trie.add(word);
@@ -26,10 +27,10 @@ public class TrieTest {
         for (String word : words) {
             assert trie.contains(word);
         }
-        
-        assert trie.wordCount("\u0080\u00A2\u00FF~\u00FF") == 1;
-        assert trie.wordCount("\u0080\u00A2\u00FF\u00EE~") == 1;
-        assert trie.prefixCount("\u0080") == 4;
+
+        assert trie.wordCount("\u0080\u00A2\u00FF\u00EE~") == 1;        
+        assert trie.wordCount("\u0080\u00A2\u00FF~\u00FF") == 2;
+        assert trie.prefixCount("\u0080") == 5;
     }
     
     public static void main(String[] args) {
