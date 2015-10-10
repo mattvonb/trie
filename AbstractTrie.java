@@ -58,6 +58,18 @@ public class AbstractTrie implements Trie {
         return wordCount(s) > 0;
     }
 
+    // public int wordCount(String s) {
+    //     return count(s, wordCount, (child, str) -> {
+    //         return child.wordCount(str);        
+    //     });
+    // }
+
+    // public int prefixCount(String s) {
+    //     return count(s, prefixCount, (child, str) -> {
+    //         return child.prefixCount(str);        
+    //     });
+    // }
+
     public int wordCount(String s) {
         return count(s, wordCount, new ChildCounter() {
             public int call(Trie child, String s) {
@@ -69,7 +81,6 @@ public class AbstractTrie implements Trie {
     public int prefixCount(String s) {
         return count(s, prefixCount, new ChildCounter() {
             public int call(Trie child, String s) {
-                System.out.println("");
                 return child.prefixCount(s);
             }
         });
