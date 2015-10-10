@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * A trie represents a set of words.
  */
@@ -21,4 +23,9 @@ public interface Trie {
      * Returns the number of words that match s exactly (i.e. homographs.)
      */
     public int wordCount(String s);
+
+    /**
+     * Returns all words that have s as a prefix.
+     */
+    public List<String> withPrefix(String s);
 }

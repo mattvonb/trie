@@ -1,6 +1,8 @@
 import java.util.function.BiFunction;
+import java.util.List;
+import java.util.ArrayList;
 
-public class AbstractTrie implements Trie {
+public abstract class AbstractTrie implements Trie {
     /**
      * The number of words this node represents the end of.
      */
@@ -16,22 +18,8 @@ public class AbstractTrie implements Trie {
         prefixCount = 0;
     }
 
-    /**
-     * Return the child of the current trie node for the given char, if it exists.
-     * Otherwise, return null.
-     */
-    protected Trie getChild(char c) {
-        throw new UnsupportedOperationException("method getChild not implemented!");
-    }
 
-    /**
-     * Create a new trie node for the given character and add it as a child to this.
-     * Returns the new child.
-     */
-    protected Trie addChild(char c) {
-        throw new UnsupportedOperationException("method getChild not implemented!");
-    }
-    
+
     public void add(String s) {
         if (s == null || s.isEmpty()) {
             wordCount++;
@@ -66,18 +54,70 @@ public class AbstractTrie implements Trie {
         });
     }
 
-    public int count(String s, int count, BiFunction<Trie, String, Integer> recur) {
+    public List<String> withPrefix(String s) {
+        return withPrefix(s, 0);
+    }
+
+
+    /**
+     * Return the child of the current trie node for the given char, if it exists.
+     * Otherwise, return null.
+     */
+    protected AbstractTrie getChild(char c) {
+        throw new UnsupportedOperationException("method getChild not implemented!");
+    }
+
+    /**
+     * Create a new trie node for the given character and add it as a child to this.
+     * Returns the new child.
+     */
+    protected AbstractTrie addChild(char c) {
+        throw new UnsupportedOperationException("method getChild not implemented!");
+    }
+
+    protected Iterable<Character> childChars() {
+        throw new UnsupportedOperationException("method childChars not implemented!");
+    }
+
+    private int count(String s, int count, BiFunction<AbstractTrie, String, Integer> recur) {
         if (s == null || s.isEmpty()) {
             return count;
         }
 
         char first = s.charAt(0);
-        Trie child = getChild(first);
+        AbstractTrie child = getChild(first);
         if (child == null) {
             return 0;
         }
 
         String rest = s.substring(1);
         return recur.apply(child, rest);
+    }
+
+    private List<String> withPrefix(String s, int index) {
+        List<String> results = new ArrayList<>();
+        if (s == null || index == s.length()) {
+            collectWords(results, new StringBuilder(s));
+            return results;
+        }
+
+        char first = s.charAt(index);
+        AbstractTrie child = getChild(first);
+        if (child == null) {
+            return results;
+        }
+
+        return child.withPrefix(s, ++index);
+    }
+
+    private void collectWords(List<String> results, StringBuilder wordBuffer) {
+        for (int i = 0; i < wordCount; i++) {
+            results.add(wordBuffer.toString());
+        }
+        for (char c : childChars()) {
+            AbstractTrie child = getChild(c);
+            child.collectWords(results, wordBuffer.append(c));
+            wordBuffer.deleteCharAt(wordBuffer.length() - 1);
+        }
     }
 }

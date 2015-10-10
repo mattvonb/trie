@@ -17,7 +17,7 @@ public class DoublyChainedTrie extends AbstractTrie {
         next = null;
     }
 
-    protected Trie getChild(char c) {
+    protected AbstractTrie getChild(char c) {
         DoublyChainedTrie cur = child;
         while (cur != null && cur.c != c) {
             cur = cur.next;
@@ -25,7 +25,7 @@ public class DoublyChainedTrie extends AbstractTrie {
         return cur;
     }
 
-    protected Trie addChild(char c) {
+    protected AbstractTrie addChild(char c) {
         DoublyChainedTrie newChild = new DoublyChainedTrie(c);
         if (child == null) {
             child = newChild;

@@ -13,12 +13,12 @@ public class ArrayTrie extends AbstractTrie {
         children = new ArrayTrie[256];
     }
     
-    protected Trie addChild(char c) {
+    protected AbstractTrie addChild(char c) {
         children[(int)c] = new ArrayTrie();
         return children[(int)c];
     }
 
-    protected Trie getChild(char c) {
+    protected AbstractTrie getChild(char c) {
         return children[(int)c];
     }
 }
