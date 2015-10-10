@@ -1,10 +1,6 @@
 import java.util.function.BiFunction;
 
 public class AbstractTrie implements Trie {
-    static interface ChildCounter {
-        public int call(Trie child, String s);
-    }
-
     /**
      * The number of words this node represents the end of.
      */
@@ -58,35 +54,19 @@ public class AbstractTrie implements Trie {
         return wordCount(s) > 0;
     }
 
-    // public int wordCount(String s) {
-    //     return count(s, wordCount, (child, str) -> {
-    //         return child.wordCount(str);        
-    //     });
-    // }
-
-    // public int prefixCount(String s) {
-    //     return count(s, prefixCount, (child, str) -> {
-    //         return child.prefixCount(str);        
-    //     });
-    // }
-
     public int wordCount(String s) {
-        return count(s, wordCount, new ChildCounter() {
-            public int call(Trie child, String s) {
-                return child.wordCount(s);
-            }
+        return count(s, wordCount, (child, str) -> {
+            return child.wordCount(str);        
         });
     }
 
     public int prefixCount(String s) {
-        return count(s, prefixCount, new ChildCounter() {
-            public int call(Trie child, String s) {
-                return child.prefixCount(s);
-            }
+        return count(s, prefixCount, (child, str) -> {
+            return child.prefixCount(str);        
         });
     }
 
-    public int count(String s, int count, ChildCounter counter) {
+    public int count(String s, int count, BiFunction<Trie, String, Integer> recur) {
         if (s == null || s.isEmpty()) {
             return count;
         }
@@ -98,6 +78,6 @@ public class AbstractTrie implements Trie {
         }
 
         String rest = s.substring(1);
-        return counter.call(child, rest);
+        return recur.apply(child, rest);
     }
 }
