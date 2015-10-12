@@ -62,5 +62,7 @@ public class TrieTest {
         testNonEnglishChars(new DoublyChainedTrie());
 
         testPrefixLookup(new HashMapTrie());
+        testPrefixLookup(new DoublyChainedTrie());
+        testPrefixLookup(new ArrayTrie());
     }
 }

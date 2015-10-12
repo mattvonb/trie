@@ -13,29 +13,15 @@ public abstract class AbstractTrie implements Trie {
      */
     private int prefixCount;
 
+
     public AbstractTrie() {
         wordCount = 0;
         prefixCount = 0;
     }
 
 
-
     public void add(String s) {
-        if (s == null || s.isEmpty()) {
-            wordCount++;
-            return;
-        }
-        
-        prefixCount++;
-        char first = s.charAt(0);
-        Trie child = getChild(first);
-        if (child == null) {
-            child = addChild(first);
-        }
-
-        // @TODO -- we need to improve the performance of this operation.
-        String rest = s.substring(1);
-        child.add(rest);
+        add(s, 0);
     }
 
     public boolean contains(String s) {
@@ -43,15 +29,11 @@ public abstract class AbstractTrie implements Trie {
     }
 
     public int wordCount(String s) {
-        return count(s, wordCount, (child, str) -> {
-            return child.wordCount(str);        
-        });
+        return wordCount(s, 0);
     }
 
     public int prefixCount(String s) {
-        return count(s, prefixCount, (child, str) -> {
-            return child.prefixCount(str);        
-        });
+        return prefixCount(s, 0);
     }
 
     public List<String> withPrefix(String s) {
@@ -79,19 +61,47 @@ public abstract class AbstractTrie implements Trie {
         throw new UnsupportedOperationException("method childChars not implemented!");
     }
 
-    private int count(String s, int count, BiFunction<AbstractTrie, String, Integer> recur) {
-        if (s == null || s.isEmpty()) {
+
+    private void add(String s, int start) {
+        if (s == null || start >= s.length()) {
+            wordCount++;
+            return;
+        }
+        
+        prefixCount++;
+        char first = s.charAt(start);
+        AbstractTrie child = getChild(first);
+        if (child == null) {
+            child = addChild(first);
+        }
+
+        child.add(s, start+1);
+    }
+
+    private int wordCount(String s, int start) {
+        return count(s, start, wordCount, (child, str, newStart) -> {
+            return child.wordCount(str, newStart);        
+        });
+    }
+
+    private int prefixCount(String s, int start) {
+        return count(s, start, prefixCount, (child, str, newStart) -> {
+            return child.prefixCount(str, newStart);        
+        });
+    }
+
+    private int count(String s, int start, int count, CounterRecurrence recur) {
+        if (s == null || start >= s.length()) {
             return count;
         }
 
-        char first = s.charAt(0);
+        char first = s.charAt(start);
         AbstractTrie child = getChild(first);
         if (child == null) {
             return 0;
         }
 
-        String rest = s.substring(1);
-        return recur.apply(child, rest);
+        return recur.call(child, s, start+1);
     }
 
     private List<String> withPrefix(String s, int index) {
@@ -119,5 +129,10 @@ public abstract class AbstractTrie implements Trie {
             child.collectWords(results, wordBuffer.append(c));
             wordBuffer.deleteCharAt(wordBuffer.length() - 1);
         }
+    }
+
+    @FunctionalInterface
+    private interface CounterRecurrence {
+        public int call(AbstractTrie child, String s, int start);
     }
 }

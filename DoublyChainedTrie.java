@@ -1,3 +1,6 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * A Trie implementation wherein children are chained in a singly-linked list.
  */
@@ -38,5 +41,28 @@ public class DoublyChainedTrie extends AbstractTrie {
         }
         cur.next = newChild;
         return cur.next;
+    }
+
+    protected Iterable<Character> childChars() {
+        return new Iterable<Character>() {
+            public Iterator<Character> iterator() {
+                return new Iterator<Character>() {
+                    private DoublyChainedTrie cur = child;
+
+                    public boolean hasNext() {
+                        return cur != null;
+                    }
+
+                    public Character next() {
+                        if (cur == null) {
+                            throw new NoSuchElementException("No more child characters.");
+                        }
+                        char c = cur.c;
+                        cur = cur.next;
+                        return c;
+                    }
+                };
+            }
+        };
     }
 }
