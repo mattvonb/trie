@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * A Trie implementation wherein children are chained in a singly-linked list.
+ * A Trie implementation wherein siblings are chained in a singly-linked list.
  */
 public class DoublyChainedTrie extends AbstractTrie {
     private char c;

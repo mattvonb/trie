@@ -57,6 +57,10 @@ public abstract class AbstractTrie implements Trie {
         throw new UnsupportedOperationException("method getChild not implemented!");
     }
 
+    /**
+     * An Iterable over each character for which there exists a child node of
+     * this trie node. 
+     */
     protected Iterable<Character> childChars() {
         throw new UnsupportedOperationException("method childChars not implemented!");
     }

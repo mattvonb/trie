@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 /**
  * A Trie implementation that uses a hash map to link a node to it's children.
- * This tree is limited to dictionaries comprised of the latin-1 charset.
+ * This tree is limited to dictionaries made up of the latin-1 charset.
  */
 public class ArrayTrie extends AbstractTrie {
     private ArrayTrie[] children;
