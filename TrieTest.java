@@ -7,6 +7,21 @@ import java.util.stream.Stream;
 import java.nio.charset.Charset;
 
 public class TrieTest {
+    public static void main(String[] args) {
+        test(new HashMapTrie());
+        test(new ArrayTrie());
+        test(new DoublyChainedTrie());
+    }
+
+    public static void test(Trie trie) {
+        loadDict(trie);
+        testPrefix(trie);
+        testPrefixCount(trie);
+        testWordCount(trie);
+        testContains(trie);
+        testReconcileWithPrefixAndPrefixCount(trie);
+    }
+
     private static void loadDict(Trie trie) {
         loadFromFile(trie);
         addNonAsciiWords(trie);
@@ -100,20 +115,5 @@ public class TrieTest {
 
     private static void testReconcileWithPrefixAndPrefixCount(Trie trie, String prefix) {
         assert trie.withPrefix(prefix).size() == trie.prefixCount(prefix);
-    }
-
-    public static void test(Trie trie) {
-        loadDict(trie);
-        testPrefix(trie);
-        testPrefixCount(trie);
-        testWordCount(trie);
-        testContains(trie);
-        testReconcileWithPrefixAndPrefixCount(trie);
-    }
-    
-    public static void main(String[] args) {
-        test(new HashMapTrie());
-        test(new ArrayTrie());
-        test(new DoublyChainedTrie());
-    }
+    }  
 }
