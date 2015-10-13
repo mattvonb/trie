@@ -45,25 +45,19 @@ public abstract class AbstractTrie implements Trie {
      * Return the child of the current trie node for the given char, if it exists.
      * Otherwise, return null.
      */
-    protected AbstractTrie getChild(char c) {
-        throw new UnsupportedOperationException("method getChild not implemented!");
-    }
+    protected abstract AbstractTrie getChild(char c);
 
     /**
      * Create a new trie node for the given character and add it as a child to this.
      * Returns the new child.
      */
-    protected AbstractTrie addChild(char c) {
-        throw new UnsupportedOperationException("method getChild not implemented!");
-    }
+    protected abstract AbstractTrie addChild(char c);
 
     /**
      * An Iterable over each character for which there exists a child node of
      * this trie node. 
      */
-    protected Iterable<Character> childChars() {
-        throw new UnsupportedOperationException("method childChars not implemented!");
-    }
+    protected abstract Iterable<Character> childChars();
 
 
     private void add(String s, int start) {
