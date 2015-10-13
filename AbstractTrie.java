@@ -67,12 +67,12 @@ public abstract class AbstractTrie implements Trie {
 
 
     private void add(String s, int start) {
+        prefixCount++;
         if (s == null || start >= s.length()) {
             wordCount++;
             return;
         }
-        
-        prefixCount++;
+
         char first = s.charAt(start);
         AbstractTrie child = getChild(first);
         if (child == null) {
