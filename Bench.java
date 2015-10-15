@@ -34,11 +34,16 @@ public class Bench {
         }
     }
 
-    private static void findWordsForPrefixes(Trie trie) {
-        // load
+    private static void findForPrefixes(Trie trie, List<String> prefixes) {
+        for (String s : prefixes) {
+            trie.withPrefix(s);
+        }
     }
 
-    private static void test100Words() {
+    private static void testWords(Trie trie, List<String> words) {
+        for (String s : words) {
+            trie.contains(s);
+        }
     }
 
     private static void profile(Runnable r) {
@@ -46,12 +51,10 @@ public class Bench {
         runtime.gc();
 
         long m0 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("mem before: " + m0);
         long t0 = System.nanoTime();
         r.run();
         long t1 = System.nanoTime();
         long m1 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("mem after: " + m1);
 
         System.out.println("Memory usage (bytes):" + (m1-m0));
         System.out.println("Time elapsed (ns):" + (t1-t0));
@@ -68,6 +71,15 @@ public class Bench {
         System.out.println("Add 100 more words:");
         List<String> dict2 = loadWordsFromFile("100new.txt");
         profile(() -> addToTrie(trie, dict2));
+
+        System.out.println("Test for the existence for 100 words");
+        List<String> words = loadWordsFromFile("100words.txt");
+        profile(() -> testWords(trie, words));
+
+        System.out.println("Get words for 100 prefixes:");
+        List<String> prefixes = loadWordsFromFile("100prefixes.txt");
+        profile(() -> findForPrefixes(trie, prefixes));
+        
     }
 
     public static void main(String[] args) {
