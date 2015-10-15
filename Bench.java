@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Measures the performance and memory utilization of different Trie operations
@@ -33,10 +34,8 @@ public class Bench {
         }
     }
 
-    private static void add100Words(Trie trie) {
-    }
-
-    private static void findWordsFor100Prefixes(Trie trie) {
+    private static void findWordsForPrefixes(Trie trie) {
+        // load
     }
 
     private static void test100Words() {
@@ -70,7 +69,7 @@ public class Bench {
         List<String> dict2 = loadWordsFromFile("100new.txt");
         profile(() -> addToTrie(trie, dict2));
     }
-    
+
     public static void main(String[] args) {
         System.out.println("Begin ArrayTrie:");
         bench(new ArrayTrie());

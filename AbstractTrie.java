@@ -1,6 +1,9 @@
+//package com.mattvonb.collect;
+
 import java.util.function.BiFunction;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class AbstractTrie implements Trie {
     /**
@@ -12,6 +15,11 @@ public abstract class AbstractTrie implements Trie {
      * The number of words this node represents a prefix of.
      */
     private int prefixCount;
+
+    /**
+     * The number of nodes in this trie.
+     */
+    private int nodeCount;
 
 
     public AbstractTrie() {
@@ -39,7 +47,6 @@ public abstract class AbstractTrie implements Trie {
     public List<String> withPrefix(String s) {
         return withPrefix(s, 0);
     }
-
 
     /**
      * Return the child of the current trie node for the given char, if it exists.
@@ -74,6 +81,43 @@ public abstract class AbstractTrie implements Trie {
         }
 
         child.add(s, start+1);
+    }
+
+    int countNodes() {
+        int count = 0;
+        for (char c : childChars()) {
+            count += getChild(c).countNodes();
+        }
+        nodeCount = count + 1;
+        return nodeCount;
+    }
+
+    
+    String randomPrefix() {
+        StringBuilder buf = new StringBuilder();
+        randomPrefix(buf);
+        return buf.toString();
+    }
+
+    void randomPrefix(StringBuilder buf) {
+        Random rand = new Random();
+        int num = rand.nextInt(nodeCount);
+        if (num == 0) {
+            return;
+        }
+        int total = 0;
+        for (char c : childChars()) {
+            AbstractTrie child = getChild(c);
+            total += child.nodeCount;
+            if (num <= total) {
+                buf.append(c);
+                child.randomPrefix(buf);
+                return;
+            }
+        }
+        if (total != 0) {
+            throw new RuntimeException("badness! buf: " + buf.toString());
+        }
     }
 
     private int wordCount(String s, int start) {
